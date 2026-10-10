@@ -35,8 +35,10 @@ tabs for readings, inspect credentials, or bypass MCP with direct API requests.
   calendar-today statistics.
 - Use `list_devices` for inventory and `explain_metric` for metric meanings.
 - If the service is unreachable or needs authentication, report that specific
-  failure and direct the user to start the service or authenticate in Codex. Share
-  tokens belong only on the Airo authorization page, never in chat.
+  failure. For an unreachable hosted service, suggest retrying and contacting the
+  test operator if it remains unavailable. For an authentication failure, direct
+  the user to authenticate in Codex. Share tokens belong only on the Airo
+  authorization page, never in chat.
 
 Lead with supported observations and preserve units and meaningful gaps. Label
 `data_mode=fixture` as simulated; do not call `data_mode=live` simulated. Missing

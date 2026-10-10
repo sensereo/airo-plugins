@@ -4,15 +4,15 @@ Sensereo's private plugin marketplace for internal Airo connection testing.
 The Airo plugin supplies its name, MCP address, and guidance for reading sensors.
 You do not download a ZIP or run an operating-system installer.
 
-**Private local-service preview:** version `0.2.2` connects to the Airo service on
-`http://127.0.0.1:8766/mcp/server`. The local backend supports real Console shared
-data in `console_shared` mode and synthetic data in `mock` mode. Each tool result
-identifies its data source. This repository does not contain or start the backend.
+**Private hosted-service preview:** version `0.3.0` is configured to connect to
+`https://airo-mcp-internal-preview.vercel.app/mcp/server`. No local backend,
+project checkout, or developer setup is required. Each tool result identifies
+whether its readings are live Console shared data or simulated data.
 
-Version `0.2.2` is distributed through the private Git source on `feat/airo-mcp`.
-Existing installations must refresh the Sensereo source to pick up the updated
-reading guidance and Airo icons. Publishing this plugin does not deploy the
-backend or change the local MCP address.
+The plugin is distributed through the private Git source on `feat/airo-mcp`.
+Existing installations must refresh the Sensereo source and authenticate with
+the hosted service. This package retains the Airo reading guidance and supplied
+silver-ring/blue-dot icons. Publishing the plugin does not deploy the backend.
 
 ## Before you connect
 
@@ -22,15 +22,12 @@ backend or change the local MCP address.
   `sensereo/airo-plugins` repository. Git used by Codex must already be able to
   authenticate through your existing Git credential manager or SSH setup.
   Signing into Codex alone does not grant access to a private GitHub repository.
-- Keep the Airo service running on the **same computer** at
-  `http://127.0.0.1:8766/mcp`. Another person's `127.0.0.1` is their computer,
-  not the demo operator's computer. Testers on other computers each need a local
-  service until a shared HTTPS service is deployed.
-- Obtain a share token separately from the data owner or test operator. A backend
-  in `console_shared` mode accepts a Console-issued share token and verifies its
-  read-only scope. A backend in `mock` mode accepts only its own simulated share
-  tokens. These modes do not fall back to one another. Use the authorization
-  page's description to confirm which service is running.
+- Connect to the internet so Codex and your browser can reach the shared HTTPS
+  Airo service.
+- Obtain a share token separately from the data owner or test operator. The
+  authorization page identifies the service and verifies the token's read-only
+  scope. Live data requires a Console-issued share token; simulated data uses
+  a token issued for that test service. These modes do not fall back to one another.
 
 Repository access and Airo data access are separate. Never put a GitHub
 credential in the source URL or enter a share token in Codex chat, configuration,
@@ -38,26 +35,22 @@ or a terminal command. Share tokens belong on the Airo authorization page.
 
 ## Add Airo and connect
 
-1. On the Airo page, choose **Codex**.
-2. In Codex's plugin settings, use **Add plugin marketplace** to add the
+1. In Codex's plugin settings, use **Add plugin marketplace** to add the
    Sensereo Git source:
 
    ```text
    https://github.com/sensereo/airo-plugins.git
    ```
 
-   Codex's CLI supports this Git source. The user has also confirmed the desktop
-   plugin appears and opens OAuth; the webpage-to-Codex installation link has
-   not been independently verified.
-3. Find **Airo** in **Sensereo** and install it. Its name and server address
+2. Find **Airo** in **Sensereo** and install it. Its name and server address
    are already supplied by the plugin.
-4. Follow the connection prompt. If authorization does not open automatically,
+3. Follow the connection prompt. If authorization does not open automatically,
    select **Authenticate** for the plugin's `airo_shared` MCP connection.
-5. On the Airo page opened in your browser, enter the matching share token and
+4. On the Airo page opened in your browser, enter the matching share token and
    select **Review access**.
-6. Review the shared devices and read-only access, then choose
+5. Review the shared devices and read-only access, then choose
    **Allow read-only access**. Return to Codex after authentication completes.
-7. Start a new conversation and ask **“Hey Airo, how's the air?”** or
+6. Start a new conversation and ask **“Hey Airo, how's the air?”** or
    **“What did Airo sense today?”**. The answer should identify synthetic data
    when simulated, and preserve measurement times and gaps when reading live data.
 
@@ -103,22 +96,25 @@ codex plugin marketplace upgrade sensereo
 codex plugin add airo@sensereo
 ```
 
-Reopen the plugin page and confirm version `0.2.2` and the silver-ring/blue-dot
-logo. Start a new conversation to use the updated reading guidance. Updating
-icons and guidance keeps the same MCP address and does not grant new data access.
+Reopen the plugin page and confirm version `0.3.0`, the silver-ring/blue-dot
+logo, and the HTTPS Airo server address. Select **Authenticate** for `airo_shared`
+or run `codex mcp login airo_shared` to authorize the hosted service in your
+browser. Authorization for the previous local service does not grant access to
+this hosted service. Start a new conversation after connecting.
 
 ## Access and troubleshooting
 
 - **Private source cannot be fetched:** confirm repository membership and Git
   authentication. Do not substitute your Airo share token as a Git credential.
-- **Service cannot be reached:** open `http://127.0.0.1:8766/mcp` on this computer
-  and ask the demo operator to start the local backend if necessary.
+- **Service cannot be reached:** open the
+  [Airo connection page](https://airo-mcp-internal-preview.vercel.app/mcp), retry,
+  and contact the test operator if the hosted service remains unavailable.
 - **Authentication expired:** select **Authenticate**, or rerun
   `codex mcp login airo_shared`, then use a valid share token for that backend mode
   in the browser.
-- **Console token rejected by a simulated page:** ask the operator to start the
-  backend in `console_shared` mode. Installing the plugin does not select the
-  backend's data mode or bypass token validation.
+- **Console token rejected by a simulated page:** ask the operator to check the
+  hosted service's data mode. Installing the plugin does not select the backend's
+  data mode or bypass token validation.
 - **Connection succeeded but no readings:** check which devices the reviewed
   share allows. Do not assume the plugin grants access to every Airo device.
 
@@ -136,7 +132,7 @@ specify the shared Airo plugin when checking which data source was used.
 To revoke one AI connection, use **Disconnect this AI app** on the Airo page
 in the browser that authorized it. Ask the data owner or test operator to revoke
 the source share if all connections using that share should lose access.
-To remove only this plugin's local connection and marketplace:
+To remove only this plugin's connection and marketplace from Codex:
 
 ```sh
 codex mcp logout airo_shared
@@ -148,7 +144,30 @@ Logging out or uninstalling alone does not prove server-side revocation.
 
 ## Maintainers
 
-Verified on 2026-10-10 with an isolated Codex configuration: fetch from this
+**Hosted service verification for `0.3.0` passed on 2026-10-10** at
+`https://airo-mcp-internal-preview.vercel.app`. OAuth discovery was reachable,
+unauthenticated MCP requests returned `401`, and sensitive responses used
+`no-store`. A real Console share token completed access review, authorization,
+and the PKCE token exchange; replaying the authorization code was rejected.
+The service exposed the four read-only tools, listed seven shared devices, and
+returned a current reading for one device and history. A fresh Codex session
+using `gpt-6-luna` with medium reasoning also completed a `get_current` call.
+
+The stable HTTPS alias was then switched to a new Git Preview deployment of
+backend commit `321cb11`. The existing access token continued to work after
+that deployment change. Revoking the tested AI grant caused both existing and
+new MCP clients to receive `401`, and its refresh token was rejected. The
+underlying Console share was not revoked. No token or sensor records are stored
+in this plugin repository.
+
+These checks cover the hosted service and a fresh Codex tool call. A fresh
+graphical plugin installation and native Codex browser authorization against
+the hosted service still require user acceptance. They must not be inferred
+from the earlier local-service installation test below. Package validation
+alone does not establish runtime connectivity or successful authorization.
+
+The earlier local-service preview was verified on 2026-10-10 with an isolated
+Codex configuration: fetch from this
 private HTTPS Git repository, install `airo@sensereo` 0.2.0, discover the
 `airo_shared` connection, and complete native Codex OAuth using a temporary
 simulated share. An MCP SDK call using that authorization listed the four
@@ -156,13 +175,13 @@ read-only tools and read two simulated devices. The test share was then revoked
 and the isolated OAuth credentials removed. This does not validate other users'
 Git credentials, desktop marketplace dialogs, public hosting, or live data.
 
-Version `0.2.1` updates the guidance to follow live/fixture response metadata,
+Version `0.2.1` updated the guidance to follow live/fixture response metadata,
 measurement freshness and Console request limits. Package validation alone does
 not establish a successful live OAuth or natural-language test; those results
-belong in the backend integration verification record. Version `0.2.2` includes
-these guidance improvements; no public service is deployed by this plugin release.
+belong in the backend integration verification record. Version `0.2.2` included
+these guidance improvements and continued to use the local service.
 
-Version `0.2.2` adds the owner-supplied silver-ring and blue-dot artwork as the
+Version `0.2.2` added the owner-supplied silver-ring and blue-dot artwork as the
 plugin listing logo and composer icon. `assets/airo-icon.svg` embeds a PNG
 conversion of the supplied TIFF, centered at its original aspect ratio on a
 square canvas. It has no external image dependencies. Both themes use the same
@@ -180,11 +199,10 @@ python3 scripts/validate_package.py
 ```
 
 Changing this repository from private to public only changes who can obtain the
-plugin files. It does not grant Airo data access. Before opening testing to
-people who do not run the backend locally, deploy and validate a shared HTTPS
-MCP/OAuth service, update `.mcp.json` and preview descriptions, bump the plugin
-version, and retest a fresh install and authorization. That deployment and the
-public-directory listing have not been completed by this package.
+plugin files. It does not grant Airo data access. This remains a private Git
+marketplace; a public-directory listing is separate and has not been completed
+by this package. Hosted backend deployment and credentials remain in the
+separate private service repository.
 
 Plugin layout and Git marketplace documentation:
 [OpenAI plugin development guide](https://developers.openai.com/plugins/build/plugins).

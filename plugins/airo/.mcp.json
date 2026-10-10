@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "airo_shared": {
-      "url": "http://127.0.0.1:8766/mcp/server"
+      "url": "https://airo-mcp-internal-preview.vercel.app/mcp/server"
     }
   }
 }

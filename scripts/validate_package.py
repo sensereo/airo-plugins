@@ -52,7 +52,7 @@ def main():
     plugin_root = ROOT / "plugins/airo"
     manifest = read_json("plugins/airo/.codex-plugin/plugin.json")
     require(manifest["name"] == "airo", "unexpected plugin identity")
-    require(manifest["version"] == "0.2.2", "update validation when releasing a new version")
+    require(manifest["version"] == "0.3.0", "update validation when releasing a new version")
     require("hooks" not in manifest, "hooks are outside this package's scope")
     require(manifest["interface"]["capabilities"] == ["Read"], "unexpected capability")
     for key in ("logo", "composerIcon"):
@@ -82,13 +82,13 @@ def main():
 
     mcp = read_json("plugins/airo/.mcp.json")
     require(
-        mcp == {"mcpServers": {"airo_shared": {"url": "http://127.0.0.1:8766/mcp/server"}}},
-        "preview must contain only the known HTTP endpoint, no commands, headers, or credentials",
+        mcp == {"mcpServers": {"airo_shared": {"url": "https://airo-mcp-internal-preview.vercel.app/mcp/server"}}},
+        "preview must contain only the known HTTPS endpoint, no commands, headers, or credentials",
     )
     skill = (plugin_root / "skills/airo-shared-readings/SKILL.md").read_text()
     require(skill.startswith("---\nname: airo-shared-readings\n"), "unexpected skill identity")
     require("airo_shared" in skill and "airo_demo_local" not in skill, "stale MCP routing")
-    print("Validated 8 distribution files: Airo 0.2.2 / Sensereo / local HTTP service.")
+    print("Validated 8 distribution files: Airo 0.3.0 / Sensereo / hosted HTTPS service.")
     print("Package metadata does not prove server authorization or runtime connectivity.")
 
 

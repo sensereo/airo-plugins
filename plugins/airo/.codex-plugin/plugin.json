@@ -1,7 +1,7 @@
 {
   "name": "airo",
-  "version": "0.2.2",
-  "description": "Read shared Airo air readings and history through the local MCP service. The backend selects live Console shared data or simulated data.",
+  "version": "0.3.0",
+  "description": "Read shared Airo air readings and history through the hosted Airo MCP service. Each tool result identifies live or simulated data.",
   "author": {
     "name": "Sensereo"
   },
@@ -11,7 +11,7 @@
     "displayName": "Airo",
     "developerName": "Sensereo",
     "shortDescription": "Read shared Airo air readings with your AI.",
-    "longDescription": "Connect Airo to Codex, enter your separately supplied share token in the browser, review the shared devices, and allow read-only access. This internal preview requires the Airo service on this computer. The configured backend supplies live Console shared readings or simulated data, identified in each tool result. It cannot change device settings.",
+    "longDescription": "Connect Airo to Codex, enter your separately supplied share token in the browser, review the shared devices, and allow read-only access. This internal preview connects to the shared HTTPS Airo service; no local backend is required. The configured backend supplies live Console shared readings or simulated data, identified in each tool result. It cannot change device settings.",
     "category": "Productivity",
     "capabilities": [
       "Read"
