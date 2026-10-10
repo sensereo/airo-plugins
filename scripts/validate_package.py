@@ -50,7 +50,7 @@ def main():
     plugin_root = ROOT / "plugins/airo"
     manifest = read_json("plugins/airo/.codex-plugin/plugin.json")
     require(manifest["name"] == "airo", "unexpected plugin identity")
-    require(manifest["version"] == "0.2.0", "update validation when releasing a new version")
+    require(manifest["version"] == "0.2.1", "update validation when releasing a new version")
     require("hooks" not in manifest, "hooks are outside this package's scope")
     require(manifest["interface"]["capabilities"] == ["Read"], "unexpected capability")
     for key, expected in (("mcpServers", "./.mcp.json"), ("skills", "./skills/")):
@@ -65,7 +65,7 @@ def main():
     skill = (plugin_root / "skills/airo-shared-readings/SKILL.md").read_text()
     require(skill.startswith("---\nname: airo-shared-readings\n"), "unexpected skill identity")
     require("airo_shared" in skill and "airo_demo_local" not in skill, "stale MCP routing")
-    print("Validated 7 distribution files: Airo 0.2.0 / Sensereo / local HTTP demo.")
+    print("Validated 7 distribution files: Airo 0.2.1 / Sensereo / local HTTP service.")
     print("Package metadata does not prove server authorization or runtime connectivity.")
 
 

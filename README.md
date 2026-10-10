@@ -4,9 +4,15 @@ Sensereo's private plugin marketplace for internal Airo connection testing.
 The Airo plugin supplies its name, MCP address, and guidance for reading sensors.
 You do not download a ZIP or run an operating-system installer.
 
-**Current preview:** version `0.2.0` connects to the simulated Airo demo on
-`http://127.0.0.1:8766/mcp/server`. It does not connect to production Sensereo
-data. This repository does not contain or start the backend.
+**Local development preview:** version `0.2.1` connects to the Airo service on
+`http://127.0.0.1:8766/mcp/server`. The local backend supports real Console shared
+data in `console_shared` mode and synthetic data in `mock` mode. Each tool result
+identifies its data source. This repository does not contain or start the backend.
+
+Version `0.2.1` is currently committed locally only. The private Git source still
+distributes `0.2.0` until a separate publication step is approved and performed.
+The Git installation instructions below therefore install the published version;
+maintainers can validate this local checkout separately before publication.
 
 ## Before you connect
 
@@ -16,13 +22,15 @@ data. This repository does not contain or start the backend.
   `sensereo/airo-plugins` repository. Git used by Codex must already be able to
   authenticate through your existing Git credential manager or SSH setup.
   Signing into Codex alone does not grant access to a private GitHub repository.
-- Keep the Airo demo running on the **same computer** at
+- Keep the Airo service running on the **same computer** at
   `http://127.0.0.1:8766/mcp`. Another person's `127.0.0.1` is their computer,
   not the demo operator's computer. Testers on other computers each need a local
-  demo until a shared HTTPS service is deployed.
-- Obtain a short-lived demo share token separately from the demo operator.
-  It must be issued by the simulated demo you are connecting to. It is not a
-  GitHub token, an Airo password, or a production Sensereo API token.
+  service until a shared HTTPS service is deployed.
+- Obtain a share token separately from the data owner or test operator. A backend
+  in `console_shared` mode accepts a Console-issued share token and verifies its
+  read-only scope. A backend in `mock` mode accepts only its own simulated share
+  tokens. These modes do not fall back to one another. Use the authorization
+  page's description to confirm which service is running.
 
 Repository access and Airo data access are separate. Never put a GitHub
 credential in the source URL or enter a share token in Codex chat, configuration,
@@ -38,19 +46,20 @@ or a terminal command. Share tokens belong on the Airo authorization page.
    https://github.com/sensereo/airo-plugins.git
    ```
 
-   Codex's CLI supports this Git source. The desktop dialog and webpage-to-Codex
-   installation link have not been exercised in this acceptance run; the
-   verified route uses the CLI steps below.
+   Codex's CLI supports this Git source. The user has also confirmed the desktop
+   plugin appears and opens OAuth; the webpage-to-Codex installation link has
+   not been independently verified.
 3. Find **Airo** in **Sensereo** and install it. Its name and server address
    are already supplied by the plugin.
 4. Follow the connection prompt. If authorization does not open automatically,
    select **Authenticate** for the plugin's `airo_shared` MCP connection.
-5. On the Airo page opened in your browser, enter your demo share token and
+5. On the Airo page opened in your browser, enter the matching share token and
    select **Review access**.
 6. Review the shared devices and read-only access, then choose
    **Allow read-only access**. Return to Codex after authentication completes.
 7. Start a new conversation and ask **“Hey Airo, how's the air?”** or
-   **“What did Airo sense today?”**. The answer should identify simulated data.
+   **“What did Airo sense today?”**. The answer should identify synthetic data
+   when simulated, and preserve measurement times and gaps when reading live data.
 
 ### CLI alternative
 
@@ -91,7 +100,11 @@ the window before starting a fresh conversation.
 - **Service cannot be reached:** open `http://127.0.0.1:8766/mcp` on this computer
   and ask the demo operator to start the local backend if necessary.
 - **Authentication expired:** select **Authenticate**, or rerun
-  `codex mcp login airo_shared`, then use a valid demo share token in the browser.
+  `codex mcp login airo_shared`, then use a valid share token for that backend mode
+  in the browser.
+- **Console token rejected by a simulated page:** ask the operator to start the
+  backend in `console_shared` mode. Installing the plugin does not select the
+  backend's data mode or bypass token validation.
 - **Connection succeeded but no readings:** check which devices the reviewed
   share allows. Do not assume the plugin grants access to every Airo device.
 
@@ -106,8 +119,9 @@ specify the shared Airo plugin when checking which data source was used.
 
 ## Disconnect or remove
 
-To revoke authorized access, use **Disconnect this AI app** on the Airo page
-in the browser that authorized it, or ask the demo operator to revoke its share.
+To revoke one AI connection, use **Disconnect this AI app** on the Airo page
+in the browser that authorized it. Ask the data owner or test operator to revoke
+the source share if all connections using that share should lose access.
 To remove only this plugin's local connection and marketplace:
 
 ```sh
@@ -127,6 +141,12 @@ simulated share. An MCP SDK call using that authorization listed the four
 read-only tools and read two simulated devices. The test share was then revoked
 and the isolated OAuth credentials removed. This does not validate other users'
 Git credentials, desktop marketplace dialogs, public hosting, or live data.
+
+Version `0.2.1` updates the guidance to follow live/fixture response metadata,
+measurement freshness and Console request limits. Package validation alone does
+not establish a successful live OAuth or natural-language test; those results
+belong in the backend integration verification record. Neither this local version
+nor a deployed public service has been published by this update.
 
 This repository contains only marketplace metadata, the plugin configuration,
 and the reading skill. It contains no backend, installer, runtime, account,
