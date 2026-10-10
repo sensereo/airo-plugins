@@ -22,10 +22,17 @@ tabs for readings, inspect credentials, or bypass MCP with direct API requests.
 - For today or trends, use returned Pod IDs and metrics with `get_history`.
   Prefer `realtime` for recent trends. Its window and `day` are rolling 24-hour
   windows, not calendar days. Use the response's exact window when supplied.
-  Retrieve history relevant to the question; do not fetch every device and metric
-  by default. Console limits each share token to 20 history requests and 60 total
-  requests per minute. On rate limits, report the need to retry later, without a
-  retry loop. Do not relabel full-window summaries as calendar-today statistics.
+  For a broad daily question, make a first pass of at most four relevant Pod/metric
+  history calls, prioritizing the user's stated interests and fresh readings.
+  State which rooms and metrics the answer covers; do not imply an exhaustive
+  account report. An old latest reading does not prove its history is empty.
+  Do not fetch every device and metric by default. For an explicitly exhaustive
+  request, use bounded batches and pagination within Console's shared limits of
+  20 history requests and 60 total requests per minute; each MCP tool can make
+  multiple upstream requests for inventory and authorization. If a rate limit
+  occurs, stop further Airo calls for this turn, explain any incomplete coverage,
+  and let the user retry later. Do not relabel full-window summaries as
+  calendar-today statistics.
 - Use `list_devices` for inventory and `explain_metric` for metric meanings.
 - If the service is unreachable or needs authentication, report that specific
   failure and direct the user to start the service or authenticate in Codex. Share
