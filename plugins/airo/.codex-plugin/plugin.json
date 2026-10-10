@@ -1,0 +1,24 @@
+{
+  "name": "airo",
+  "version": "0.2.0",
+  "description": "Read shared Airo air readings and history. This internal preview connects to a local simulated demo.",
+  "author": {
+    "name": "Sensereo"
+  },
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Airo",
+    "developerName": "Sensereo",
+    "shortDescription": "Read shared Airo air readings with your AI.",
+    "longDescription": "Connect Airo to Codex, enter your separately supplied share token in the browser, review the shared devices, and allow read-only access. This internal preview requires the Airo demo on this computer and supplies simulated readings. It cannot change device settings.",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "defaultPrompt": [
+      "Hey Airo, how's the air?",
+      "What did Airo sense today?"
+    ]
+  }
+}
