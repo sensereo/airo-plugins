@@ -38,9 +38,9 @@ or a terminal command. Share tokens belong on the Airo authorization page.
    https://github.com/sensereo/airo-plugins.git
    ```
 
-   Codex's CLI supports this Git source. The exact desktop dialog fields and
-   private-repository authentication behavior have not yet been verified for
-   every client version. If that UI is unavailable, use the CLI steps below.
+   Codex's CLI supports this Git source. The desktop dialog and webpage-to-Codex
+   installation link have not been exercised in this acceptance run; the
+   verified route uses the CLI steps below.
 3. Find **Airo** in **Sensereo** and install it. Its name and server address
    are already supplied by the plugin.
 4. Follow the connection prompt. If authorization does not open automatically,
@@ -58,12 +58,14 @@ Run these commands individually. The final command starts browser authorization;
 the plugin installation command alone does not guarantee that a browser opens.
 
 ```sh
-codex plugin marketplace add https://github.com/sensereo/airo-plugins.git --ref feat/airo-mcp
+codex plugin marketplace add https://github.com/sensereo/airo-plugins.git
 codex plugin add airo@sensereo
 codex mcp login airo_shared
 ```
 
-The source's initial development branch is `feat/airo-mcp`. If using SSH with
+The source's initial default and development branch is `feat/airo-mcp`. To pin
+that branch explicitly, append `--ref feat/airo-mcp` to the marketplace command.
+If using SSH with
 an already configured GitHub SSH key, the corresponding source is
 `git@github.com:sensereo/airo-plugins.git`. Use one source consistently. If
 **sensereo** is already registered elsewhere, inspect
@@ -117,6 +119,14 @@ codex plugin marketplace remove sensereo
 Logging out or uninstalling alone does not prove server-side revocation.
 
 ## Maintainers
+
+Verified on 2026-10-10 with an isolated Codex configuration: fetch from this
+private HTTPS Git repository, install `airo@sensereo` 0.2.0, discover the
+`airo_shared` connection, and complete native Codex OAuth using a temporary
+simulated share. An MCP SDK call using that authorization listed the four
+read-only tools and read two simulated devices. The test share was then revoked
+and the isolated OAuth credentials removed. This does not validate other users'
+Git credentials, desktop marketplace dialogs, public hosting, or live data.
 
 This repository contains only marketplace metadata, the plugin configuration,
 and the reading skill. It contains no backend, installer, runtime, account,
