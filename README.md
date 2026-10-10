@@ -4,15 +4,15 @@ Sensereo's private plugin marketplace for internal Airo connection testing.
 The Airo plugin supplies its name, MCP address, and guidance for reading sensors.
 You do not download a ZIP or run an operating-system installer.
 
-**Local development preview:** version `0.2.2` connects to the Airo service on
+**Private local-service preview:** version `0.2.2` connects to the Airo service on
 `http://127.0.0.1:8766/mcp/server`. The local backend supports real Console shared
 data in `console_shared` mode and synthetic data in `mock` mode. Each tool result
 identifies its data source. This repository does not contain or start the backend.
 
-Version `0.2.2` is currently committed locally only. The private Git source still
-distributes `0.2.0` until a separate publication step is approved and performed.
-The Git installation instructions below therefore install the published version;
-maintainers can validate this local checkout separately before publication.
+Version `0.2.2` is distributed through the private Git source on `feat/airo-mcp`.
+Existing installations must refresh the Sensereo source to pick up the updated
+reading guidance and Airo icons. Publishing this plugin does not deploy the
+backend or change the local MCP address.
 
 ## Before you connect
 
@@ -93,6 +93,20 @@ plugin has no OS-specific installer; availability and UI depend on the Codex
 client. If an existing window does not show the newly installed plugin, reopen
 the window before starting a fresh conversation.
 
+### Update an existing installation
+
+Use **Upgrade** for the Sensereo Git source in Codex's plugin settings. The CLI
+alternative refreshes the source and then installs its current Airo package:
+
+```sh
+codex plugin marketplace upgrade sensereo
+codex plugin add airo@sensereo
+```
+
+Reopen the plugin page and confirm version `0.2.2` and the silver-ring/blue-dot
+logo. Start a new conversation to use the updated reading guidance. Updating
+icons and guidance keeps the same MCP address and does not grant new data access.
+
 ## Access and troubleshooting
 
 - **Private source cannot be fetched:** confirm repository membership and Git
@@ -145,15 +159,14 @@ Git credentials, desktop marketplace dialogs, public hosting, or live data.
 Version `0.2.1` updates the guidance to follow live/fixture response metadata,
 measurement freshness and Console request limits. Package validation alone does
 not establish a successful live OAuth or natural-language test; those results
-belong in the backend integration verification record. Neither this local version
-nor a deployed public service has been published by this update.
+belong in the backend integration verification record. Version `0.2.2` includes
+these guidance improvements; no public service is deployed by this plugin release.
 
 Version `0.2.2` adds the owner-supplied silver-ring and blue-dot artwork as the
 plugin listing logo and composer icon. `assets/airo-icon.svg` embeds a PNG
 conversion of the supplied TIFF, centered at its original aspect ratio on a
 square canvas. It has no external image dependencies. Both themes use the same
-artwork. This icon change is local until the plugin source is published and
-refreshed in Codex.
+artwork. Refresh the Sensereo source in Codex to load the updated package.
 
 This repository contains only marketplace metadata, the plugin configuration,
 brand artwork, and the reading skill. It contains no backend, installer, runtime, account,
