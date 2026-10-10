@@ -1,6 +1,6 @@
 {
   "name": "airo",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Read shared Airo air readings and history through the local MCP service. The backend selects live Console shared data or simulated data.",
   "author": {
     "name": "Sensereo"
@@ -19,6 +19,8 @@
     "defaultPrompt": [
       "Hey Airo, how's the air?",
       "What did Airo sense today?"
-    ]
+    ],
+    "logo": "./assets/airo-icon.svg",
+    "composerIcon": "./assets/airo-icon.svg"
   }
 }

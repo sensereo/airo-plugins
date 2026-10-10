@@ -4,12 +4,12 @@ Sensereo's private plugin marketplace for internal Airo connection testing.
 The Airo plugin supplies its name, MCP address, and guidance for reading sensors.
 You do not download a ZIP or run an operating-system installer.
 
-**Local development preview:** version `0.2.1` connects to the Airo service on
+**Local development preview:** version `0.2.2` connects to the Airo service on
 `http://127.0.0.1:8766/mcp/server`. The local backend supports real Console shared
 data in `console_shared` mode and synthetic data in `mock` mode. Each tool result
 identifies its data source. This repository does not contain or start the backend.
 
-Version `0.2.1` is currently committed locally only. The private Git source still
+Version `0.2.2` is currently committed locally only. The private Git source still
 distributes `0.2.0` until a separate publication step is approved and performed.
 The Git installation instructions below therefore install the published version;
 maintainers can validate this local checkout separately before publication.
@@ -148,8 +148,15 @@ not establish a successful live OAuth or natural-language test; those results
 belong in the backend integration verification record. Neither this local version
 nor a deployed public service has been published by this update.
 
+Version `0.2.2` adds the owner-supplied silver-ring and blue-dot artwork as the
+plugin listing logo and composer icon. `assets/airo-icon.svg` embeds a PNG
+conversion of the supplied TIFF, centered at its original aspect ratio on a
+square canvas. It has no external image dependencies. Both themes use the same
+artwork. This icon change is local until the plugin source is published and
+refreshed in Codex.
+
 This repository contains only marketplace metadata, the plugin configuration,
-and the reading skill. It contains no backend, installer, runtime, account,
+brand artwork, and the reading skill. It contains no backend, installer, runtime, account,
 share token, OAuth credential, or sensor records. Keep backend implementation
 and deployment credentials in the separate private service repository.
 
